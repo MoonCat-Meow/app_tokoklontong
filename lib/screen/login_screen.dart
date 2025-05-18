@@ -1,4 +1,7 @@
+import 'package:app_tokoklontong/screen/dashboard_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -15,14 +18,20 @@ class _LoginScreenState extends State<LoginScreen> {
     String email = _emailController.text;
     String password = _passwordController.text;
 
-    // Simulasi proses login
-    if (email == 'admin@example.com' && password == '123456') {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Login berhasil!')));
+    if (email == 'admin' && password == '1234') {
+      Get.snackbar(
+        'Sukses',
+        'Login berhasil!',
+        snackPosition: SnackPosition.BOTTOM,
+      );
+      Get.off(
+        () => DashboardScreen(),
+      ); // Pindah ke halaman berikutnya dan tidak bisa kembali ke login
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Email atau password salah.')),
+      Get.snackbar(
+        'Gagal',
+        'Email atau password salah.',
+        snackPosition: SnackPosition.BOTTOM,
       );
     }
   }
@@ -52,7 +61,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 border: OutlineInputBorder(),
               ),
             ),
-
             const SizedBox(height: 24),
             ElevatedButton(onPressed: _login, child: const Text('Login')),
           ],
