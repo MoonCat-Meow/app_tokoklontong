@@ -1,7 +1,7 @@
 import 'package:app_tokoklontong/screen/splash_screem.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'screen/login_screen.dart';
+import 'package:app_tokoklontong/screen/login_screen.dart';
 
 void main() {
   runApp(const MyApp());

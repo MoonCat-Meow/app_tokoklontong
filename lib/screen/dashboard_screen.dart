@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class DashboardPage extends StatelessWidget {
+class DashboardScreen extends StatelessWidget {
   final List<Map<String, dynamic>> products = [
     {"name": "Beras", "price": 12000, "stock": 20},
     {"name": "Minyak Goreng", "price": 15000, "stock": 10},
@@ -22,8 +22,16 @@ class DashboardPage extends StatelessWidget {
               crossAxisSpacing: 10,
               mainAxisSpacing: 10,
               children: [
-                _buildCard("Pendapatan Hari Ini", "Rp 250.000", Icons.attach_money),
-                _buildCard("Total Produk", "${products.length}", Icons.inventory),
+                _buildCard(
+                  "Pendapatan Hari Ini",
+                  "Rp 250.000",
+                  Icons.attach_money,
+                ),
+                _buildCard(
+                  "Total Produk",
+                  "${products.length}",
+                  Icons.inventory,
+                ),
               ],
             ),
             SizedBox(height: 20),
@@ -34,7 +42,9 @@ class DashboardPage extends StatelessWidget {
                   final item = products[index];
                   return ListTile(
                     title: Text(item["name"]),
-                    subtitle: Text("Harga: Rp${item["price"]} | Stok: ${item["stock"]}"),
+                    subtitle: Text(
+                      "Harga: Rp${item["price"]} | Stok: ${item["stock"]}",
+                    ),
                     trailing: Icon(Icons.arrow_forward_ios),
                   );
                 },
@@ -46,8 +56,14 @@ class DashboardPage extends StatelessWidget {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: 0,
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.dashboard), label: 'Dashboard'),
-          BottomNavigationBarItem(icon: Icon(Icons.receipt), label: 'Transaksi'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.dashboard),
+            label: 'Dashboard',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.receipt),
+            label: 'Transaksi',
+          ),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil'),
         ],
       ),

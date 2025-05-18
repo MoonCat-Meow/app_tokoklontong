@@ -1,7 +1,7 @@
 import 'dart:async';
+import 'package:app_tokoklontong/screen/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -16,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     Timer(const Duration(seconds: 3), () {
       Get.off(
-        () => const HomeScreen(),
+        () => const LoginScreen(),
       ); // Navigasi tanpa bisa kembali ke splash
     });
   }
