@@ -1,7 +1,9 @@
-import 'package:app_tokoklontong/providers/auth_provider.dart';
-import 'package:app_tokoklontong/screen/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import 'package:app_tokoklontong/providers/auth_provider.dart';
+import 'package:app_tokoklontong/screen/login_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -55,153 +57,161 @@ class _RegisterScreenState extends State<RegisterScreen> {
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [Color(0xFF00C6FF), Color(0xFF0072FF)],
+            colors: [Color(0xFF1FA2FF), Color(0xFF12D8FA), Color(0xFFA6FFCB)],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
         ),
         child: Center(
           child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                children: [
-                  Image.asset(
-                    'assets/images/TokoBabe2D.png',
-                    height: 250,
-                    width: 250,
-                    fit: BoxFit.contain,
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              children: [
+                Image.asset(
+                  'assets/images/TokoBabe2D.png',
+                  height: 160,
+                  fit: BoxFit.contain,
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  'Buat Akun Baru',
+                  style: GoogleFonts.poppins(
+                    fontSize: 28,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
                   ),
-                  const SizedBox(height: 16),
-                  const Text(
-                    'Registrasi Akun',
-                    style: TextStyle(
-                      fontSize: 30,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                    ),
+                ),
+                const SizedBox(height: 30),
+                Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(24),
                   ),
-                  const SizedBox(height: 40),
-                  Card(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
-                    ),
-                    elevation: 10,
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(
-                          children: [
-                            TextFormField(
-                              controller: _usernameController,
-                              decoration: const InputDecoration(
-                                prefixIcon: Icon(Icons.person),
-                                labelText: 'Username',
-                                border: OutlineInputBorder(),
+                  elevation: 10,
+                  shadowColor: Colors.black26,
+                  child: Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          TextFormField(
+                            controller: _usernameController,
+                            decoration: InputDecoration(
+                              prefixIcon: const Icon(Icons.person),
+                              labelText: 'Username',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
                               ),
-                              validator:
-                                  (value) =>
-                                      value!.isEmpty
-                                          ? 'Username tidak boleh kosong'
-                                          : null,
                             ),
-                            const SizedBox(height: 16),
-                            TextFormField(
-                              controller: _emailController,
-                              decoration: const InputDecoration(
-                                prefixIcon: Icon(Icons.email),
-                                labelText: 'Email',
-                                border: OutlineInputBorder(),
+                            validator:
+                                (value) =>
+                                    value!.isEmpty
+                                        ? 'Username tidak boleh kosong'
+                                        : null,
+                          ),
+                          const SizedBox(height: 16),
+                          TextFormField(
+                            controller: _emailController,
+                            keyboardType: TextInputType.emailAddress,
+                            decoration: InputDecoration(
+                              prefixIcon: const Icon(Icons.email),
+                              labelText: 'Email',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
                               ),
-                              keyboardType: TextInputType.emailAddress,
-                              validator:
-                                  (value) =>
-                                      value!.isEmpty
-                                          ? 'Email tidak boleh kosong'
-                                          : null,
                             ),
-                            const SizedBox(height: 16),
-                            TextFormField(
-                              controller: _nohpController,
-                              decoration: const InputDecoration(
-                                prefixIcon: Icon(Icons.phone),
-                                labelText: 'No. HP',
-                                border: OutlineInputBorder(),
+                            validator:
+                                (value) =>
+                                    value!.isEmpty
+                                        ? 'Email tidak boleh kosong'
+                                        : null,
+                          ),
+                          const SizedBox(height: 16),
+                          TextFormField(
+                            controller: _nohpController,
+                            keyboardType: TextInputType.phone,
+                            decoration: InputDecoration(
+                              prefixIcon: const Icon(Icons.phone),
+                              labelText: 'No. HP',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
                               ),
-                              keyboardType: TextInputType.phone,
-                              validator:
-                                  (value) =>
-                                      value!.isEmpty
-                                          ? 'No. HP tidak boleh kosong'
-                                          : null,
                             ),
-                            const SizedBox(height: 16),
-                            TextFormField(
-                              controller: _passwordController,
-                              obscureText: _obscureText,
-                              decoration: InputDecoration(
-                                prefixIcon: const Icon(Icons.lock),
-                                labelText: 'Password',
-                                border: const OutlineInputBorder(),
-                                suffixIcon: IconButton(
-                                  icon: Icon(
-                                    _obscureText
-                                        ? Icons.visibility_off
-                                        : Icons.visibility,
-                                  ),
-                                  onPressed: () {
-                                    setState(() {
-                                      _obscureText = !_obscureText;
-                                    });
-                                  },
+                            validator:
+                                (value) =>
+                                    value!.isEmpty
+                                        ? 'No. HP tidak boleh kosong'
+                                        : null,
+                          ),
+                          const SizedBox(height: 16),
+                          TextFormField(
+                            controller: _passwordController,
+                            obscureText: _obscureText,
+                            decoration: InputDecoration(
+                              prefixIcon: const Icon(Icons.lock),
+                              labelText: 'Password',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _obscureText
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
                                 ),
-                              ),
-                              validator:
-                                  (value) =>
-                                      value!.length < 6
-                                          ? 'Password minimal 6 karakter'
-                                          : null,
-                            ),
-                            const SizedBox(height: 24),
-                            SizedBox(
-                              width: double.infinity,
-                              child: ElevatedButton(
-                                onPressed: _register,
-                                style: ElevatedButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(
-                                    vertical: 16,
-                                  ),
-                                  backgroundColor: Colors.blue.shade700,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                  ),
-                                ),
-                                child: const Text(
-                                  'DAFTAR',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    letterSpacing: 1.2,
-                                    color: Colors.white,
-                                  ),
-                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _obscureText = !_obscureText;
+                                  });
+                                },
                               ),
                             ),
-                            TextButton(
-                              onPressed:
-                                  () => Get.off(() => const LoginScreen()),
+                            validator:
+                                (value) =>
+                                    value!.length < 6
+                                        ? 'Password minimal 6 karakter'
+                                        : null,
+                          ),
+                          const SizedBox(height: 24),
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              onPressed: _register,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.blueAccent,
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 16,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                                elevation: 6,
+                              ),
                               child: const Text(
-                                'Sudah punya akun? Login',
-                                style: TextStyle(fontSize: 16),
+                                'DAFTAR',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  letterSpacing: 1,
+                                ),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                          const SizedBox(height: 12),
+                          TextButton(
+                            onPressed: () => Get.off(() => const LoginScreen()),
+                            child: const Text(
+                              'Sudah punya akun? Login di sini',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
