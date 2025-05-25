@@ -1,7 +1,10 @@
-import 'package:app_tokoklontong/screen/dashboard_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'home_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import 'package:app_tokoklontong/providers/auth_provider.dart';
+import 'package:app_tokoklontong/screen/dashboard_screen.dart';
+import 'package:app_tokoklontong/screen/register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -11,26 +14,39 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _identityController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final AuthProvider _authProvider = Get.put(AuthProvider());
 
-  void _login() {
-    String email = _emailController.text;
-    String password = _passwordController.text;
+  bool _obscureText = true;
 
-    if (email == 'admin' && password == '1234') {
+  void _login() async {
+    String identity = _identityController.text.trim();
+    String password = _passwordController.text.trim();
+
+    if (identity.isEmpty || password.isEmpty) {
+      Get.snackbar('Error', 'Harap isi semua field');
+      return;
+    }
+
+    bool success = await _authProvider.loginUser(
+      identity: identity,
+      password: password,
+    );
+
+    if (success) {
       Get.snackbar(
         'Sukses',
         'Login berhasil!',
+        backgroundColor: Colors.green.shade300,
         snackPosition: SnackPosition.BOTTOM,
       );
-      Get.off(
-        () => DashboardScreen(),
-      ); // Pindah ke halaman berikutnya dan tidak bisa kembali ke login
+      Get.off(() => DashboardScreen());
     } else {
       Get.snackbar(
         'Gagal',
-        'Email atau password salah.',
+        'Username/email atau password salah!',
+        backgroundColor: Colors.red.shade300,
         snackPosition: SnackPosition.BOTTOM,
       );
     }
@@ -39,31 +55,121 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Login')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            TextField(
-              controller: _emailController,
-              decoration: const InputDecoration(
-                labelText: 'Email',
-                border: OutlineInputBorder(),
-              ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xFF1FA2FF), Color(0xFF12D8FA), Color(0xFFA6FFCB)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset(
+                  'assets/images/TokoBabe2D.png',
+                  height: 160,
+                  fit: BoxFit.contain,
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  'Selamat Datang',
+                  style: GoogleFonts.poppins(
+                    fontSize: 28,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                const SizedBox(height: 30),
+                Card(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  elevation: 10,
+                  shadowColor: Colors.black26,
+                  child: Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: Column(
+                      children: [
+                        TextField(
+                          controller: _identityController,
+                          decoration: InputDecoration(
+                            prefixIcon: const Icon(Icons.person),
+                            labelText: 'Username atau Email',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        TextField(
+                          controller: _passwordController,
+                          obscureText: _obscureText,
+                          decoration: InputDecoration(
+                            prefixIcon: const Icon(Icons.lock),
+                            labelText: 'Password',
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _obscureText
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _obscureText = !_obscureText;
+                                });
+                              },
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: _login,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blueAccent,
+                              padding: const EdgeInsets.symmetric(
+                                vertical: 16,
+                                horizontal: 8,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                              elevation: 6,
+                            ),
+                            child: const Text(
+                              'LOGIN',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        TextButton(
+                          onPressed: () => Get.to(() => const RegisterScreen()),
+                          child: const Text(
+                            'Belum punya akun? Daftar di sini',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration: const InputDecoration(
-                labelText: 'Password',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 24),
-            ElevatedButton(onPressed: _login, child: const Text('Login')),
-          ],
+          ),
         ),
       ),
     );

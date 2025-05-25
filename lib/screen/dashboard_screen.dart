@@ -1,4 +1,6 @@
+import 'package:app_tokoklontong/screen/login_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class DashboardScreen extends StatelessWidget {
   final List<Map<String, dynamic>> products = [
@@ -7,10 +9,33 @@ class DashboardScreen extends StatelessWidget {
     {"name": "Gula", "price": 11000, "stock": 8},
   ];
 
+  void _logout() {
+    // Contoh logika logout: hapus token, session, dsb.
+
+    // Navigasi ke LoginScreen (widget)
+    Get.offAll(LoginScreen());
+
+    Get.snackbar(
+      'Logout',
+      'Anda berhasil logout',
+      backgroundColor: Colors.green.shade300,
+      snackPosition: SnackPosition.BOTTOM,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Toko Kelontong Makmur')),
+      appBar: AppBar(
+        title: Text('Toko Kelontong Makmur'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: _logout,
+            tooltip: 'Logout',
+          ),
+        ],
+      ),
       body: Padding(
         padding: EdgeInsets.all(16),
         child: Column(
