@@ -17,11 +17,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _emailController = TextEditingController();
   final _nohpController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
 
   final AuthProvider authProvider = Get.put(AuthProvider());
 
   final _formKey = GlobalKey<FormState>();
   bool _obscureText = true;
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _emailController.dispose();
+    _nohpController.dispose();
+    _passwordController.dispose();
+    _confirmPasswordController.dispose();
+    super.dispose();
+  }
 
   void _register() async {
     if (_formKey.currentState!.validate()) {
@@ -174,7 +185,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),
                           const SizedBox(height: 16),
                           TextFormField(
-                            controller: _passwordController,
+                            controller: _confirmPasswordController,
                             obscureText: _obscureText,
                             decoration: InputDecoration(
                               prefixIcon: const Icon(Icons.lock),
@@ -195,11 +206,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 },
                               ),
                             ),
-                            validator:
-                                (value) =>
-                                    value!.length < 6
-                                        ? 'Password tidak sesuai'
-                                        : null,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Konfirmasi password tidak boleh kosong';
+                              }
+                              if (value != _passwordController.text) {
+                                return 'Password tidak cocok';
+                              }
+                              return null;
+                            },
                           ),
                           const SizedBox(height: 24),
                           SizedBox(
