@@ -1,20 +1,37 @@
-import 'package:app_tokoklontong/screen/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 
-class DashboardScreen extends StatelessWidget {
-  final List<Map<String, dynamic>> products = [
-    {"name": "Beras", "price": 12000, "stock": 20},
-    {"name": "Minyak Goreng", "price": 15000, "stock": 10},
-    {"name": "Gula", "price": 11000, "stock": 8},
+import 'package:app_tokoklontong/screen/login_screen.dart';
+import 'package:app_tokoklontong/screen/dashboard_home.dart'; // pastikan file ini ada
+
+class DashboardScreen extends StatefulWidget {
+  const DashboardScreen({super.key});
+
+  @override
+  State<DashboardScreen> createState() => _DashboardScreenState();
+}
+
+class _DashboardScreenState extends State<DashboardScreen> {
+  int _currentIndex = 2; // Home di tengah (index ke-2)
+
+  final iconList = <IconData>[
+    Icons.inventory_2, // Produk
+    Icons.receipt_long, // Transaksi
+    Icons.bar_chart, // Laporan
+    Icons.person, // Akun
+  ];
+
+  final List<Widget> pages = [
+    const Placeholder(child: Text('Halaman Produk')),
+    const Placeholder(child: Text('Halaman Transaksi')),
+    const DashboardHome(), // Halaman Home
+    const Placeholder(child: Text('Halaman Laporan')),
+    const Placeholder(child: Text('Halaman Akun')),
   ];
 
   void _logout() {
-    // Contoh logika logout: hapus token, session, dsb.
-
-    // Navigasi ke LoginScreen (widget)
-    Get.offAll(LoginScreen());
-
+    Get.offAll(() => const LoginScreen());
     Get.snackbar(
       'Logout',
       'Anda berhasil logout',
@@ -27,90 +44,44 @@ class DashboardScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Toko Kelontong Makmur'),
+        title: const Text('Toko Kelontong Makmur'),
         actions: [
           IconButton(
-            icon: Icon(Icons.logout),
+            icon: const Icon(Icons.logout),
             onPressed: _logout,
             tooltip: 'Logout',
           ),
         ],
       ),
-      body: Padding(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          children: [
-            GridView.count(
-              crossAxisCount: 2,
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-              children: [
-                _buildCard(
-                  "Pendapatan Hari Ini",
-                  "Rp 250.000",
-                  Icons.attach_money,
-                ),
-                _buildCard(
-                  "Total Produk",
-                  "${products.length}",
-                  Icons.inventory,
-                ),
-              ],
-            ),
-            SizedBox(height: 20),
-            Expanded(
-              child: ListView.builder(
-                itemCount: products.length,
-                itemBuilder: (_, index) {
-                  final item = products[index];
-                  return ListTile(
-                    title: Text(item["name"]),
-                    subtitle: Text(
-                      "Harga: Rp${item["price"]} | Stok: ${item["stock"]}",
-                    ),
-                    trailing: Icon(Icons.arrow_forward_ios),
-                  );
-                },
-              ),
-            ),
-          ],
+      body: pages[_currentIndex],
+      floatingActionButton: SizedBox(
+        width: 56,
+        height: 56,
+        child: FloatingActionButton(
+          shape: const CircleBorder(),
+          onPressed: () => setState(() => _currentIndex = 2), // Home
+          backgroundColor: Colors.green,
+          elevation: 8,
+          child: const Icon(Icons.home, size: 28),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.dashboard),
-            label: 'Dashboard',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.receipt),
-            label: 'Transaksi',
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profil'),
-        ],
-      ),
-    );
-  }
 
-  Widget _buildCard(String title, String value, IconData icon) {
-    return Card(
-      elevation: 4,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: Padding(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(icon, size: 40, color: Colors.green),
-            SizedBox(height: 10),
-            Text(title, style: TextStyle(fontWeight: FontWeight.bold)),
-            SizedBox(height: 5),
-            Text(value, style: TextStyle(fontSize: 16, color: Colors.black54)),
-          ],
-        ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: AnimatedBottomNavigationBar(
+        icons: iconList,
+        activeIndex: _currentIndex < 2 ? _currentIndex : _currentIndex - 1,
+        gapLocation: GapLocation.center,
+        notchSmoothness: NotchSmoothness.verySmoothEdge,
+        leftCornerRadius: 0, // ubah ini jadi 0
+        rightCornerRadius: 0, // ubah ini jadi 0
+        activeColor: Colors.white,
+        inactiveColor: Colors.grey,
+        backgroundColor: Colors.teal,
+        iconSize: 28,
+        onTap: (index) {
+          int actualIndex = index < 2 ? index : index + 1;
+          setState(() => _currentIndex = actualIndex);
+        },
       ),
     );
   }
