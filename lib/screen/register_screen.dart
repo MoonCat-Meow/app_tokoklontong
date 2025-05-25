@@ -172,6 +172,35 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                         ? 'Password minimal 6 karakter'
                                         : null,
                           ),
+                          const SizedBox(height: 16),
+                          TextFormField(
+                            controller: _passwordController,
+                            obscureText: _obscureText,
+                            decoration: InputDecoration(
+                              prefixIcon: const Icon(Icons.lock),
+                              labelText: 'Konfirmasi Password',
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _obscureText
+                                      ? Icons.visibility_off
+                                      : Icons.visibility,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _obscureText = !_obscureText;
+                                  });
+                                },
+                              ),
+                            ),
+                            validator:
+                                (value) =>
+                                    value!.length < 6
+                                        ? 'Password tidak sesuai'
+                                        : null,
+                          ),
                           const SizedBox(height: 24),
                           SizedBox(
                             width: double.infinity,
